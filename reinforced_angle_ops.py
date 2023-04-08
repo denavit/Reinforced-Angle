@@ -20,7 +20,7 @@ class ReinforcedAngleOPS():
         self.nele_o = 8
         self.use_fiber_sections = True
     
-    def run_analysis(self,target_disp,num_steps=100):
+    def run_analysis(self,target_disp,num_steps=100,percent_load_drop_limit=None):
 
         # Computed properties
         nele = self.nele_a + 2*self.nele_o
@@ -161,6 +161,11 @@ class ReinforcedAngleOPS():
             results_axial_deformation.append(-ops.nodeDisp(2, 2))
             results_lateral_deformation_reinf.append(ops.nodeDisp(reinf_mid_node, 1))
             results_lateral_deformation_angle.append(ops.nodeDisp(angle_mid_node, 1))
+            
+            if percent_load_drop_limit is not None:
+                if results_load[-1] < (1-percent_load_drop_limit)*max(results_load):
+                    break
+            
 
         # Build results object
         results = AnalysisResults()
