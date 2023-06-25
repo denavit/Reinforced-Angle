@@ -26,7 +26,7 @@ plt.ylabel('Applied Axial Load (kips)')
 plt.figure()
 plt.plot(results.lateral_deformation_reinf,results.load,label='Reinforcing')
 plt.plot(results.lateral_deformation_angle,results.load,label='Angle')
-plt.xlabel('Lateral Deformation (in.)')
+plt.xlabel('Lateral Deformation at Mid-height (in.)')
 plt.ylabel('Applied Axial Load (kips)')
 plt.legend()
 
