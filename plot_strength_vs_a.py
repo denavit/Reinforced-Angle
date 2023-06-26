@@ -34,8 +34,8 @@ design_a_list = np.linspace(0.1,a_max,N)
 design_Pn_065_list = np.zeros(N)
 design_Pn_100_list = np.zeros(N)
 for i,a in enumerate(design_a_list):
-    design_Pn_065_list[i] = shape.Pnz(24.0,a,0.65)
-    design_Pn_100_list[i] = shape.Pnz(24.0,a,1.0)
+    design_Pn_065_list[i] = shape.Pnz(L,a,0.65)
+    design_Pn_100_list[i] = shape.Pnz(L,a,1.0)
 
 # Run OpenSees analyses
 N = 20
