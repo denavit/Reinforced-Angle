@@ -6,10 +6,12 @@ from libdenavit.OpenSees import plot_deformed_2d, plot_undeformed_2d
 
 E = 29000
 Fy = 50
-shape = ReinforcedAngleBar('L3x3x1/4',0.75,Fy)
-#shape = ReinforcedAnglePlate('L3x3x1/4',3.00,0.25,Fy)
+#shape = ReinforcedAngleBar('L3x3x1/4',0.75,Fy)
+shape = ReinforcedAnglePlate('L3x3x1/4',3.00,0.25,Fy)
+#shape = ReinforcedAnglePlate('L3x3x1/4',2.00,0.375,Fy)
+
 L = 36
-a = 10
+a = 16
 
 target_disp = 0.004*L
 num_steps = 100
