@@ -53,6 +53,13 @@ plt.legend()
 plt.figure()
 plt.plot(results.bending_moment_reinf,results.axial_load_reinf,label='Reinforcing')
 plt.plot(results.bending_moment_angle,results.axial_load_angle,label='Angle')
+
+Py = Fy*shape.A_reinf
+Mp = Fy*shape.Zz_reinf
+interaction_M = [0,0.9*Mp,Mp]
+interaction_P = [Py,0.2*Py,0]
+plt.plot(interaction_M,interaction_P,'--',label='Reinforcing')
+
 plt.xlabel('Bending Moment (kip-in.)')
 plt.ylabel('Axial Load (kips)')
 plt.legend()

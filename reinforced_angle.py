@@ -108,6 +108,10 @@ class ReinforcedAnglePlate(ReinforcedAngle):
     @property
     def rz_reinf(self):
         return self.t_plate/sqrt(12)
+
+    @property
+    def Zz_reinf(self):
+        return (1/4)*self.b_plate*self.t_plate**2
         
     @property
     def w_reinf(self):
