@@ -21,6 +21,7 @@ class ReinforcedAngleOPS():
         self.use_fiber_sections = True
     
     def run_analysis(self,target_disp,num_steps=100,percent_load_drop_limit=None):
+        # @todo - make this code work with a = L
 
         # Computed properties
         nele = self.nele_a + 2*self.nele_o
@@ -63,6 +64,8 @@ class ReinforcedAngleOPS():
         ops.geomTransf('Corotational', 100)
 
         if self.use_fiber_sections:
+            # @todo - potentially add residual stresses
+        
             #ops.uniaxialMaterial('Elastic', 1, self.E)
             ops.uniaxialMaterial('ElasticPP', 1, self.E, self.Fy/self.E)
 
@@ -169,6 +172,7 @@ class ReinforcedAngleOPS():
             results_axial_load_angle.append(ops.eleForce(100+nele/2,2))
             results_bending_moment_reinf.append(-ops.eleForce(200+nele/2,3))
             results_bending_moment_angle.append(-ops.eleForce(100+nele/2,3))
+            # @todo - potentially better to use ops.eleResponse() to get element local forces
 
             if percent_load_drop_limit is not None:
                 if results_load[-1] < (1-percent_load_drop_limit)*max(results_load):
