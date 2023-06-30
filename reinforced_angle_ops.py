@@ -6,12 +6,16 @@ from libdenavit.OpenSees import circ_patch_2d, AnalysisResults
 
 class ReinforcedAngleOPS():
 
-    def __init__(self,shape,L,a,E,Fy,dxo_over_L=0.001,dxoa_over_a=0.001):
+    def __init__(self,shape,L,a,E,Fy_angle,Fy_reinf=None,dxo_over_L=0.001,dxoa_over_a=0.001):
         self.shape = shape
         self.L  = L
         self.a  = a
         self.E  = E
-        self.Fy = Fy
+        self.Fy_angle = Fy_angle
+        if Fy_reinf is None:
+            self.Fy_reinf = Fy_angle
+        else:
+            self.Fy_reinf = Fy_reinf
 
         self.dxo = dxo_over_L*L
         self.dxoa = dxoa_over_a*a
@@ -67,7 +71,8 @@ class ReinforcedAngleOPS():
             # @todo - potentially add residual stresses
         
             #ops.uniaxialMaterial('Elastic', 1, self.E)
-            ops.uniaxialMaterial('ElasticPP', 1, self.E, self.Fy/self.E)
+            ops.uniaxialMaterial('ElasticPP', 1, self.E, self.Fy_angle/self.E)
+            ops.uniaxialMaterial('ElasticPP', 2, self.E, self.Fy_reinf/self.E)
 
             # Angle
             yo = self.shape.w_angle
@@ -94,9 +99,9 @@ class ReinforcedAngleOPS():
             # Reinforcing
             ops.section('Fiber', 2)
             if isinstance(self.shape,ReinforcedAngleBar):
-                circ_patch_2d(1, 10, self.shape.D_bar)
+                circ_patch_2d(2, 10, self.shape.D_bar)
             elif isinstance(self.shape,ReinforcedAnglePlate):
-                ops.patch('rect', 1, 20, 1, -0.5*self.shape.t_plate, -0.5*self.shape.b_plate, 0.5*self.shape.t_plate, 0.5*self.shape.b_plate)
+                ops.patch('rect', 2, 20, 1, -0.5*self.shape.t_plate, -0.5*self.shape.b_plate, 0.5*self.shape.t_plate, 0.5*self.shape.b_plate)
             else:
                 raise ValueError(f'Unknown type for shape: {type(self.shape)}')
             
