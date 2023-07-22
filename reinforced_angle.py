@@ -30,14 +30,22 @@ class ReinforcedAngle:
         else:
             return sqrt((Lcz/self.rz_total)**2 + (Ki*a/self.rz_reinf)**2)
             
-    def error_dimensional_requirement(self,Lc,a,Ki):
-        return 0.75*self.Lcz_over_rz_m(Lc,a,Ki) - Ki*a/self.rz_reinf
-    
-    def a_limit(self,Lc,Ki):
-        def err(a):
-            return(self.error_dimensional_requirement(Lc,a,Ki))
-        root = fsolve(err,1.0)
-        return root[0]
+    def a_limit(self,Lcz,Ki,K=1):
+        Lcz_over_rz_o = Lcz/self.rz_total
+        ri = self.rz_reinf
+        a_limit_1 = 0.75*Lcz_over_rz_o*ri/K    
+        a_limit_2 = sqrt(Lcz_over_rz_o**2 / ((K/(0.75*ri))**2-(Ki/ri)**2))
+        if a_limit_1 < 40*ri:
+            if a_limit_2 < 40*ri:
+                a_limit = (a_limit_1,)
+            else:
+                a_limit = (a_limit_1,40*ri,a_limit_2)
+        else:
+            if a_limit_2 < 40*ri:
+                a_limit = None
+            else:
+                a_limit = (a_limit_2,)
+        return a_limit
     
     def Pnz(self,Lcz,a,Ki):
         Lcz_over_rz = self.Lcz_over_rz_m(Lcz,a,Ki)
