@@ -57,6 +57,19 @@ class ReinforcedAngle:
         Pn = Fcr*self.A_total
         return Pn
     
+    def Pez_proposed(self,Lcz,a,K=0.5):
+        Pcr1 = (pi**2*self.E*self.Iz_total)/Lcz**2
+        Pcr2 = (self.A_total/self.A_reinf)*(pi**2*self.E*self.Iz_reinf)/(K*a)**2
+        return min(Pcr1,Pcr2)
+    
+    def Pnz_proposed(self,Lcz,a,K=0.5):
+        Fe = self.Pez_proposed(Lcz,a,K)/self.A_total
+        if self.Fy/Fe <= 2.25:
+            Fcr = self.Fy*0.658**(self.Fy/Fe)
+        else:
+            Fcr = 0.877*Fe
+        Pn = Fcr*self.A_total
+        return Pn
 
 
 class ReinforcedAngleBar(ReinforcedAngle):
