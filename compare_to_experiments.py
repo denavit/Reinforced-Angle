@@ -31,6 +31,11 @@ L_list     = [24.06,24.06,24.00,35.94,15.06,
               24.06,24.00,24.06,35.94,15.06,
               24.00,24.00,24.06,36.06,15.06]
 
+
+# Write output file header
+with open('compare_to_experiments_output.csv', 'w') as f:
+    f.write('Specimen,P_OPS_kips,P_AISC_kips,P_simple_kips,P_AISC_0_kips\n')
+
 # Run OpenSees analyses
 for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_list):
     analysis_obj = ReinforcedAngleOPS(shape,L,a,E,Fy_angle,Fy_reinf)
@@ -45,3 +50,11 @@ for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_l
     plt.savefig(os.path.join('figures', f'OpenSees_{name}.png'))
     plt.close('all')
     
+    
+    P_AISC = shape.Pnz(L,a,Ki=0.86)
+    P_simple = shape.Pnz_proposed(L,a,0.5)
+    P_AISC_0 = shape.Pnz(L,0,Ki=0.86)
+
+    # Write results to output file
+    with open('compare_to_experiments_output.csv', 'a') as f:
+        f.write(f'{name},{results.maximum_load:.3f},{P_AISC:.3f},{P_simple:.3f},{P_AISC_0:.3f}\n')
