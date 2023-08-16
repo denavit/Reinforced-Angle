@@ -47,7 +47,7 @@ class ReinforcedAngle:
                 a_limit = (a_limit_2,)
         return a_limit
     
-    def Pnz(self,Lcz,a,Ki):
+    def Pnz(self,Lcz,a,Ki=0.86):
         Lcz_over_rz = self.Lcz_over_rz_m(Lcz,a,Ki)
         Fe = pi**2*self.E/Lcz_over_rz**2
         if Lcz_over_rz <= 4.71*sqrt(self.E/self.Fy):

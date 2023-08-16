@@ -25,7 +25,6 @@ shape_dict = {
 for case in shape_dict:
     shape = shape_dict[case] 
 
-
     # Run general calculations
     Py = Fy*shape.A_total
     Pn_unit = shape.Pnz(L,0,0.86)
@@ -41,7 +40,7 @@ for case in shape_dict:
     Pe_proposed_list = np.zeros(N)
     Pn_proposed_list = np.zeros(N)
     for i,a in enumerate(a_list):
-        Pn_AISC_list[i] = shape.Pnz(L,a,0.86)
+        Pn_AISC_list[i] = shape.Pnz(L,a)
         Pe_proposed_list[i] = shape.Pez_proposed(L,a)
         Pn_proposed_list[i] = shape.Pnz_proposed(L,a)
 
