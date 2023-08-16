@@ -10,9 +10,9 @@ Fy_rod    = 59.0
 Fy_PL_250 = 51.4
 Fy_PL_375 = 56.8
 
-shapeA = ReinforcedAngleBar('L3x3x1/4',0.75,Fy_angle)
-shapeB = ReinforcedAnglePlate('L3x3x1/4',3.00,0.25,Fy_angle)
-shapeC = ReinforcedAnglePlate('L3x3x1/4',2.00,0.375,Fy_angle)
+shapeA = ReinforcedAngleBar('L3x3x1/4',0.76,Fy_angle)
+shapeB = ReinforcedAnglePlate('L3x3x1/4',3.00,0.244,Fy_angle)
+shapeC = ReinforcedAnglePlate('L3x3x1/4',2.00,0.367,Fy_angle)
 
 name_list  = ['A1','A2','A3','A4','A5',
               'B1','B2','B3','B4','B5',
@@ -23,12 +23,12 @@ shape_list = [shapeA,shapeA,shapeA,shapeA,shapeA,
 Fy_reinf_list = [Fy_rod,Fy_rod,Fy_rod,Fy_rod,Fy_rod,
                  Fy_PL_250,Fy_PL_250,Fy_PL_250,Fy_PL_250,Fy_PL_250,
                  Fy_PL_375,Fy_PL_375,Fy_PL_375,Fy_PL_375,Fy_PL_375]
-a_list     = [19,10,6,10,10,
-              19,10,6,10,10,
-              19,10,6,10,10]
-L_list     = [24,24,24,36,15,
-              24,24,24,36,15,
-              24,24,24,36,15]
+a_list     = [18.91,9.63,5.53,9.88,9.59,
+              18.72,9.50,5.59,9.50,9.84,
+              18.59,9.59,5.56,9.63,9.59]
+L_list     = [24.06,24.06,24.00,35.94,15.06,
+              24.06,24.00,24.06,35.94,15.06,
+              24.00,24.00,24.06,36.06,15.06]
 
 # Run OpenSees analyses
 for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_list):
