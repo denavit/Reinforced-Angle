@@ -33,5 +33,5 @@ L_list     = [24.06,24.06,24.00,35.94,15.06,
 # Run OpenSees analyses
 for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_list):
     analysis_obj = ReinforcedAngleOPS(shape,L,a,E,Fy_angle,Fy_reinf)
-    results = analysis_obj.run_analysis(0.01*L,1000,percent_load_drop_limit=0.10);
-    print(f'{name} {results.maximum_load:.3f} kips')
+    results = analysis_obj.run_analysis(0.05*L,10000,percent_load_drop_limit=0.10);
+    
