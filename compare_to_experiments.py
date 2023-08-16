@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from reinforced_angle import ReinforcedAngleBar,ReinforcedAnglePlate
@@ -34,4 +35,13 @@ L_list     = [24.06,24.06,24.00,35.94,15.06,
 for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_list):
     analysis_obj = ReinforcedAngleOPS(shape,L,a,E,Fy_angle,Fy_reinf)
     results = analysis_obj.run_analysis(0.05*L,10000,percent_load_drop_limit=0.10);
+    
+    plt.figure()
+    plt.plot(results.lateral_deformation_reinf,results.load,label='Reinforcing')
+    plt.plot(results.lateral_deformation_angle,results.load,label='Angle')
+    plt.xlabel('Lateral Deformation at Mid-height (in.)')
+    plt.ylabel('Applied Axial Load (kips)')
+    plt.legend()
+    plt.savefig(os.path.join('figures', f'OpenSees_{name}.png'))
+    plt.close('all')
     
