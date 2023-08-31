@@ -81,7 +81,7 @@ class ReinforcedAngleBar(ReinforcedAngle):
         self.A_angle  = angle_database[angle_name.upper()]["A"]
         self.x_bar_angle  = angle_database[angle_name.upper()]["x"]
         self.Iz_angle = angle_database[angle_name.upper()]["Iz"]
-        self.rz_angle = angle_database[angle_name.upper()]["rx"]
+        self.rz_angle = angle_database[angle_name.upper()]["rz"]
         self.D_bar = D_bar
         self.E  = 29000
         self.Fy = Fy
@@ -112,7 +112,7 @@ class ReinforcedAnglePlate(ReinforcedAngle):
         self.A_angle  = angle_database[angle_name.upper()]["A"]
         self.x_bar_angle  = angle_database[angle_name.upper()]["x"]
         self.Iz_angle = angle_database[angle_name.upper()]["Iz"]
-        self.rz_angle = angle_database[angle_name.upper()]["rx"]
+        self.rz_angle = angle_database[angle_name.upper()]["rz"]
         self.b_plate = b_plate
         self.t_plate = t_plate
         self.E  = 29000
