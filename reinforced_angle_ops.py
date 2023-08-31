@@ -76,7 +76,6 @@ class ReinforcedAngleOPS():
             ops.uniaxialMaterial('ElasticPP', 2, self.E, self.Fy_reinf/self.E)
 
             # Angle
-            yo = self.shape.w_angle
             ops.section('Fiber', 1)
             yI = -self.shape.b_angle/sqrt(2) - self.shape.t_angle/sqrt(2)
             zI = -self.shape.b_angle/sqrt(2) + self.shape.t_angle/sqrt(2)
@@ -86,7 +85,7 @@ class ReinforcedAngleOPS():
             zK = 0.0
             yL = -sqrt(2)*self.shape.t_angle
             zL = 0.0
-            ops.patch('quad', 1, 3, 20, yI-yo, zI, yJ-yo, zJ, yK-yo, zK, yL-yo, zL)
+            ops.patch('quad', 1, 3, 20, yI, zI, yJ, zJ, yK, zK, yL, zL)
             yI = -sqrt(2)*self.shape.t_angle
             zI = 0.0
             yJ = 0.0
@@ -95,7 +94,7 @@ class ReinforcedAngleOPS():
             zK =  self.shape.b_angle/sqrt(2)
             yL = -self.shape.b_angle/sqrt(2) - self.shape.t_angle/sqrt(2)
             zL =  self.shape.b_angle/sqrt(2) - self.shape.t_angle/sqrt(2)
-            ops.patch('quad', 1, 3, 20, yI-yo, zI, yJ-yo, zJ, yK-yo, zK, yL-yo, zL)    
+            ops.patch('quad', 1, 3, 20, yI, zI, yJ, zJ, yK, zK, yL, zL)    
 
             # Reinforcing
             ops.section('Fiber', 2)
@@ -183,7 +182,19 @@ class ReinforcedAngleOPS():
             if percent_load_drop_limit is not None:
                 if results_load[-1] < (1-percent_load_drop_limit)*max(results_load):
                     break
-            
+           
+        '''
+        # Check fiber data
+        fiber_data = ops.eleResponse(100+nele/2,'section',3,'fiberData')
+        fiber_y_coord = fiber_data[0::5]
+        fiber_z_coord = fiber_data[1::5]
+        fiber_area = fiber_data[2::5]
+        fiber_stress = fiber_data[3::5]
+        fiber_strain = fiber_data[4::5]
+        import matplotlib.pyplot as plt
+        plt.figure()
+        plt.plot(fiber_stress,fiber_y_coord,'o')
+        '''
 
         # Build results object
         results = AnalysisResults()
