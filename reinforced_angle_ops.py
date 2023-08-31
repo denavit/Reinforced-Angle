@@ -56,9 +56,10 @@ class ReinforcedAngleOPS():
             ops.node(200+i, xr+xo, y, '-mass', 1, 1, 1) # Reinforcement
         for i in range(self.nele_a):
             y = 0.5*(self.L-self.a) + (i/self.nele_a)*self.a
-            xo = sin(pi*y/self.L)*self.dxo + sin(pi*i/self.nele_a)*self.dxoa
+            xo = sin(pi*y/self.L)*self.dxo
+            xor = sin(pi*y/self.L)*self.dxo + sin(pi*i/self.nele_a)*self.dxoa
             ops.node(100+i+self.nele_o, xa+xo, y, '-mass', 1, 1, 1) # Angle
-            ops.node(200+i+self.nele_o, xr+xo, y, '-mass', 1, 1, 1) # Reinforcement
+            ops.node(200+i+self.nele_o, xr+xor, y, '-mass', 1, 1, 1) # Reinforcement
         for i in range(self.nele_o+1):
             y = 0.5*(self.L-self.a) + self.a + (i/self.nele_o)*0.5*(self.L-self.a)
             xo = sin(pi*y/self.L)*self.dxo
