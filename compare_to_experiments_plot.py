@@ -5,23 +5,14 @@ import matplotlib.pyplot as plt
 
 kips_to_kN = 4.44822
 
-# Read strengths from Excel file
-columns = [
-    'Specimen',
-    'P_expr_kips',
-    'P_AISC_kips',
-    'P_simple_kips',
-    'P_AISC_0_kips',
-    'P_OPS_kips']
-
-database = pd.read_excel('compare_to_experiments_output.xlsx', engine='openpyxl', sheet_name='data', usecols=columns)
-
+# Read strengths from file
+database = pd.read_csv('compare_to_experiments_output.csv')
 specimen_name = database['Specimen'].to_numpy()
 P_expr_kips   = database['P_expr_kips'].to_numpy()
 P_AISC_kips   = database['P_AISC_kips'].to_numpy()
 P_simple_kips = database['P_simple_kips'].to_numpy()
 P_AISC_0_kips = database['P_AISC_0_kips'].to_numpy()
-P_OPS_kips    = database['P_OPS_kips'].to_numpy()
+P_GMNIA_kips  = database['P_GMNIA_kips'].to_numpy()
 
 # Make plots
 # Based on example from https://matplotlib.org/stable/gallery/lines_bars_and_markers/barchart.html
@@ -45,7 +36,7 @@ plt.bar(x-2*bar_width,P_expr_kips,  label=r'$P_{expr}$'  ,width=bar_width)
 plt.bar(x-1*bar_width,P_AISC_kips,  label=r'$P_{AISC}$'  ,width=bar_width)
 plt.bar(x+0*bar_width,P_simple_kips,label=r'$P_{simple}$',width=bar_width)
 plt.bar(x+1*bar_width,P_AISC_0_kips,label=r'$P_{AISC,0}$',width=bar_width)
-plt.bar(x+2*bar_width,P_OPS_kips,   label=r'$P_{GMNIA}$' ,width=bar_width)
+plt.bar(x+2*bar_width,P_GMNIA_kips, label=r'$P_{GMNIA}$' ,width=bar_width)
 plt.xticks(x,labels=specimen_name, fontsize=7)
 plt.xlabel('Specimen')
 plt.ylabel('Strength (kips)')
@@ -68,7 +59,7 @@ bar_width = 1/3
 fig = plt.figure(figsize=(3.25,2.5))
 ax = fig.add_axes([0.16,0.15,0.82,0.82])
 plt.bar(x-0.5*bar_width,P_expr_kips*kips_to_kN, label='Experiment' ,width=bar_width)
-plt.bar(x+0.5*bar_width,P_OPS_kips*kips_to_kN,  label='Analysis'   ,width=bar_width)
+plt.bar(x+0.5*bar_width,P_GMNIA_kips*kips_to_kN,label='Analysis'   ,width=bar_width)
 plt.xticks(x,labels=specimen_name)
 plt.xlabel('Specimen')
 plt.ylabel('Strength (kN)')

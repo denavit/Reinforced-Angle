@@ -30,17 +30,23 @@ a_list     = [18.91,9.63,5.53,9.88,9.59,
 L_list     = [24.06,24.06,24.00,35.94,15.06,
               24.06,24.00,24.06,35.94,15.06,
               24.00,24.00,24.06,36.06,15.06]
+P_expr_list = [ 90.864, 91.678, 90.796, 69.553,106.962,
+               116.105,111.968,112.392, 89.469,119.919,
+                98.943,119.442,115.270, 92.864,107.768]
 
 
 # Write output file header
 with open('compare_to_experiments_output.csv', 'w') as f:
-    f.write('Specimen,P_OPS_kips,P_AISC_kips,P_simple_kips,P_AISC_0_kips\n')
+    f.write('Specimen,Lc_in,rz_in,a_in,ri_in,P_expr_kips,P_AISC_kips,P_simple_kips,P_AISC_0_kips,P_GMNIA_kips\n')
 
-# Run OpenSees analyses
-for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_list):
+# Loop through specimens
+for name,shape,Fy_reinf,a,L,P_expr in zip(name_list,shape_list,Fy_reinf_list,a_list,L_list,P_expr_list):
+    
+    # Run OpenSees analyses
     analysis_obj = ReinforcedAngleOPS(shape,L,a,E,Fy_angle,Fy_reinf)
     results = analysis_obj.run_analysis(0.05*L,10000,percent_load_drop_limit=0.10);
     
+    # Make plot
     plt.figure()
     plt.plot(results.lateral_deformation_reinf,results.load,label='Reinforcing')
     plt.plot(results.lateral_deformation_angle,results.load,label='Angle')
@@ -50,11 +56,13 @@ for name,shape,Fy_reinf,a,L in zip(name_list,shape_list,Fy_reinf_list,a_list,L_l
     plt.savefig(os.path.join('figures', f'OpenSees_{name}.png'))
     plt.close('all')
     
-    
+    # Compute design results
     P_AISC = shape.Pnz(L,a,Ki=0.86)
     P_simple = shape.Pnz_proposed(L,a,0.5)
     P_AISC_0 = shape.Pnz(L,0,Ki=0.86)
+    rz = shape.rz_total
+    ri = shape.rz_reinf
 
     # Write results to output file
     with open('compare_to_experiments_output.csv', 'a') as f:
-        f.write(f'{name},{results.maximum_load:.3f},{P_AISC:.3f},{P_simple:.3f},{P_AISC_0:.3f}\n')
+        f.write(f'{name},{L},{rz:.5f},{a},{ri:.5f},{P_expr:.3f},{P_AISC:.3f},{P_simple:.3f},{P_AISC_0:.3f},{results.maximum_load:.3f}\n')
