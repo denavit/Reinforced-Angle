@@ -69,7 +69,7 @@ for case in shape_dict:
     gmnia_color = 'tab:green'
 
 
-    # Make Design Results Plot
+    ###### Make Design Results Plot - SI units ######
     fig = plt.figure(figsize=(3.5,2.5))
     ax = fig.add_axes([0.16,0.17,0.80,0.80])
 
@@ -94,10 +94,38 @@ for case in shape_dict:
     plt.xlim((0,a_max/mm))
     plt.ylim((0,1.2))
     plt.legend(loc='lower left',frameon=True,framealpha=1.0)
-    plt.savefig(os.path.join('figures', f'strength_vs_a_{case}.png'),dpi=300)
+    plt.savefig(os.path.join('figures', f'strength_vs_a_{case}_SI.png'),dpi=300)
 
 
-    # Make Analysis Results Plot
+    ###### Make Design Results Plot - US units ######
+    fig = plt.figure(figsize=(3.5,2.5))
+    ax = fig.add_axes([0.16,0.17,0.80,0.80])
+
+    # Add shading where a is not permitted by the three-fourths rule 
+    if len(a_limit) == 1:
+        plt.axvspan(a_limit[0]/inch, a_max/inch, color='lightgray', alpha=0.5, lw=0)
+    elif len(a_limit) == 3:
+        plt.axvspan(a_limit[0]/inch, a_limit[1]/inch, color='lightgray', alpha=0.5, lw=0)
+        plt.axvspan(a_limit[2]/inch, a_max/inch, color='lightgray', alpha=0.5, lw=0)
+    else:
+        raise Exception(f"Don't know how to handle this a_limit ({a_limit})")
+
+    plt.axhline(1,linestyle='dashed',color='black')
+    plt.axhline(Pn_unit/Py,linestyle='dotted',color='black')
+    plt.plot(a_list/inch,Pn_AISC_list/Py,color=aisc_color,label='$P_{AISC}$')
+    if case in ['B','C']:
+        plt.plot(a_list/inch,Pe_proposed_list/Py,'--',color=proposed_color,label='$P_{e,simple}$')
+    plt.plot(a_list/inch,Pn_proposed_list/Py,'-',color=proposed_color,label='$P_{simple}$')
+
+    plt.xlabel('Distance between connectors, $a$ (in.)')
+    plt.ylabel('Normalized axial compression, $P/P_y$')
+    plt.xlim((0,a_max/inch))
+    plt.ylim((0,1.2))
+    plt.legend(loc='lower left',frameon=True,framealpha=1.0)
+    plt.savefig(os.path.join('figures', f'strength_vs_a_{case}_US.png'),dpi=300)
+
+
+    ###### Make Analysis Results Plot - SI units ######
     fig = plt.figure(figsize=(3.5,2.5))
     ax = fig.add_axes([0.16,0.17,0.80,0.80])
 
@@ -122,6 +150,34 @@ for case in shape_dict:
     plt.xlim((0,a_max/mm))
     plt.ylim((0,1.2))
     plt.legend(loc='lower left',frameon=True,framealpha=1.0)
-    plt.savefig(os.path.join('figures', f'strength_vs_a_with_gmnia_{case}.png'),dpi=300)
+    plt.savefig(os.path.join('figures', f'strength_vs_a_with_gmnia_{case}_SI.png'),dpi=300)
 
+
+    ###### Make Analysis Results Plot - US units ######
+    fig = plt.figure(figsize=(3.5,2.5))
+    ax = fig.add_axes([0.16,0.17,0.80,0.80])
+
+    # Add shading where a is not permitted by the three-fourths rule 
+    a_limit = shape.a_limit(L,Ki=0,K=0.65)
+    if len(a_limit) == 1:
+        plt.axvspan(a_limit[0]/inch, a_max/inch, color='lightgray', alpha=0.5, lw=0)
+    elif len(a_limit) == 3:
+        plt.axvspan(a_limit[0]/inch, a_limit[1]/inch, color='lightgray', alpha=0.5, lw=0)
+        plt.axvspan(a_limit[2]/inch, a_max/inch, color='lightgray', alpha=0.5, lw=0)
+    else:
+        raise Exception(f"Don't know how to handle this a_limit ({a_limit})")
+
+    plt.plot(a_list/inch,Pn_AISC_0_list/Py,color=aisc_color,label='$P_{AISC,0}$')
+    if case in ['B','C']:
+        plt.plot(a_list/inch,Pe_proposed_list/Py,'--',color=proposed_color,label='$P_{e,simple}$')
+    plt.plot(a_list/inch,Pn_proposed_list/Py,'-',color=proposed_color,label='$P_{simple}$')
+    plt.plot(a_ops_list/inch,P_ops_list/Py,'o-',color=gmnia_color,label='$P_{GMNIA}$',markersize=3)
+
+    plt.xlabel('Distance between connectors, $a$ (in.)')
+    plt.ylabel('Normalized axial compression, $P/P_y$')
+    plt.xlim((0,a_max/inch))
+    plt.ylim((0,1.2))
+    plt.legend(loc='lower left',frameon=True,framealpha=1.0)
+    plt.savefig(os.path.join('figures', f'strength_vs_a_with_gmnia_{case}_US.png'),dpi=300)
+    
 plt.show()

@@ -63,7 +63,7 @@ for case in shape_dict:
     proposed_color = 'tab:orange'
     gmnia_color = 'tab:green'
 
-    # Make Analysis Results Plot
+    ###### Make Analysis Results Plot - SI units ######
     fig = plt.figure(figsize=(3.5,2.5))
     ax = fig.add_axes([0.15,0.17,0.80,0.80])
 
@@ -82,6 +82,27 @@ for case in shape_dict:
     plt.xlim((L_min/mm,L_max/mm))
     plt.ylim((0,1.25))
     plt.legend(loc='lower left',frameon=True,framealpha=1.0)
-    plt.savefig(os.path.join('figures', f'strength_vs_L_with_gmnia_{case}.png'),dpi=300)
+    plt.savefig(os.path.join('figures', f'strength_vs_L_with_gmnia_{case}_SI.png'),dpi=300)
+
+    ###### Make Analysis Results Plot - US units ######
+    fig = plt.figure(figsize=(3.5,2.5))
+    ax = fig.add_axes([0.15,0.17,0.80,0.80])
+
+    # Add shading where a is not permitted by the three-fourths rule 
+    L_limit = (0.65*a/shape.rz_reinf)*shape.rz_total/0.75
+    plt.axvspan(0, L_limit/inch, color='lightgray', alpha=0.5, lw=0)
+    
+    plt.plot(L_list/inch,Pn_AISC_0_list/Py,color=aisc_color,label='$P_{AISC,0}$')
+    #if case in ['B','C']:
+    plt.plot(L_list/inch,Pe_proposed_list/Py,'--',color=proposed_color,label='$P_{e,simple}$')
+    plt.plot(L_list/inch,Pn_proposed_list/Py,'-',color=proposed_color,label='$P_{simple}$')
+    plt.plot(L_ops_list/inch,P_ops_list/Py,'o-',color=gmnia_color,label='$P_{GMNIA}$',markersize=3)
+
+    plt.xlabel('Member length, $L_c$ (in.)')
+    plt.ylabel('Normalized axial compression, $P/P_y$')
+    plt.xlim((L_min/inch,L_max/inch))
+    plt.ylim((0,1.25))
+    plt.legend(loc='lower left',frameon=True,framealpha=1.0)
+    plt.savefig(os.path.join('figures', f'strength_vs_L_with_gmnia_{case}_US.png'),dpi=300)
 
 plt.show()
