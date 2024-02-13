@@ -173,10 +173,10 @@ class ReinforcedAngleOPS():
             results_axial_deformation.append(-ops.nodeDisp(2, 2))
             results_lateral_deformation_reinf.append(ops.nodeDisp(reinf_mid_node, 1))
             results_lateral_deformation_angle.append(ops.nodeDisp(angle_mid_node, 1))
-            results_axial_load_reinf.append(ops.eleForce(200+nele/2,2))
-            results_axial_load_angle.append(ops.eleForce(100+nele/2,2))
-            results_bending_moment_reinf.append(-ops.eleForce(200+nele/2,3))
-            results_bending_moment_angle.append(-ops.eleForce(100+nele/2,3))
+            results_axial_load_reinf.append(ops.eleForce(200+nele//2,2))
+            results_axial_load_angle.append(ops.eleForce(100+nele//2,2))
+            results_bending_moment_reinf.append(-ops.eleForce(200+nele//2,3))
+            results_bending_moment_angle.append(-ops.eleForce(100+nele//2,3))
             # @todo - potentially better to use ops.eleResponse() to get element local forces
 
             if percent_load_drop_limit is not None:
