@@ -124,6 +124,10 @@ class ReinforcedAngleOPS():
         for i in range(self.nele_o):
             ops.element('mixedBeamColumn', 301+i, 101+i, 201+i, 100, 3)
             ops.element('mixedBeamColumn', 300+self.nele_o+self.nele_a+i, 100+self.nele_o+self.nele_a+i, 200+self.nele_o+self.nele_a+i, 100, 3)
+        # "contact" (connection between angle and reinforcement)
+        ops.uniaxialMaterial('ENT', 3, self.E)
+        for i in range(self.nele_a-1):
+            ops.element('corotTruss', 301+self.nele_o+i, 101+self.nele_o+i, 201+self.nele_o+i, 1000*self.shape.A_total, 3)
         # member ends
         ops.element('mixedBeamColumn', 1, 100, 1, 100, 3)
         ops.element('mixedBeamColumn', 2, 1, 200, 100, 3)
